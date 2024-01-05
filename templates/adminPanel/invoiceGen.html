@@ -1,0 +1,124 @@
+{% extends 'adminPanel/base.html' %}
+
+{% block cintent %}
+
+
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+
+                <div class="x_title">
+                    <h2>Purchase Invoice Generate</h2>
+                    <ul class="nav navbar-right panel_toolbox"><a href=""></a>
+                        <!-- <li><a href="#"><i class=""><b>Show Products</b></i></a>
+                        </li> -->
+                        <a class="btn btn-success" href="{% url 'showInvoice' %}">
+                            <font color="white">Show Invoice</font>
+                        </a>
+                        <!-- <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li> -->
+                    </ul>
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+                            <form class="form-label-left input_mask" method="POST" , action="{% url 'invoiceGen' %}"
+                                enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <div class="row">
+                                    <div class="col-md-11 ">
+                                        <div class="x_panel">
+                                            <div class="x_title">
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content">
+
+
+                                                <div class="form-group row">
+                                                    <label for="invoiceNo"
+                                                        class="col-form-label col-md-3 col-sm-3 ">Invoice Number</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="text" name="invoiceNo" class="form-control"
+                                                            placeholder="Invoice Number">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3 col-sm-3 ">Supplier Name</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <select id="supplier" class="form-control" name="supplier">
+                                                            <option selected>Select Supplier Name...</option>
+                                                            {% for i in dSupplierName %}
+                                                            <option value="{{i.id}}">{{i.SupplierName}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <label for="PurchaseQty"
+                                                        class="col-form-label col-md-3 col-sm-3 ">Purchase
+                                                        Quentity</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="number" name="PurchaseQty" value=0
+                                                            class="form-control" placeholder="Purchase Quentity" min="0">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="PurchasePrice"
+                                                        class="col-form-label col-md-3 col-sm-3 ">Purchase
+                                                        Quentity</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="number" name="PurchasePrice" value=0
+                                                            class="form-control" placeholder="Purchase Price" min="0">
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group row">
+                                                    <label for="invoiceDt"
+                                                        class="col-form-label col-md-3 col-sm-3 ">Invoice Date</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="date" name="invoiceDt" class="form-control"
+                                                            placeholder="Invoice Date">
+                                                    </div>
+                                                </div>
+
+                                                <div class="">
+                                                    <!-- <button type="button" class="btn btn-primary">Cancel</button>
+                                                                <button type="reset" class="btn btn-primary">Reset</button> -->
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+</html>

@@ -1,0 +1,169 @@
+{% extends 'adminPanel/base.html' %}
+
+{% block cintent %}
+
+
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+
+                <div class="x_title">
+                    <h2>Products Edit</h2>
+                    <ul class="nav navbar-right panel_toolbox"><a href=""></a>
+                        <!-- <li><a href="#"><i class=""><b>Show Products</b></i></a>
+                        </li> -->
+                        <a class="btn btn-success" href="{% url 'productShow' %}"><font color="white">Show Products</font></a>
+                        <!-- <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li> -->
+                    </ul>
+                    <div class="clearfix">h</div>
+                </div>
+
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                                    {% for i in dEdit %}
+                                    <form class="form-label-left input_mask" method="POST", action="{% url 'updateProduct' i.id %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                
+                                    <div class="row">
+                                        <div class="col-md-6 ">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </li>
+                                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                
+                
+                                                        <div class="form-group row">
+                                                            <label for="ProductCode" class="col-form-label col-md-3 col-sm-3 ">Product Code</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <input type="text" name="ProductCode" value="{{i.ProductCode}}" class="form-control" placeholder="Product Code">
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label for="ProductName" class="col-form-label col-md-3 col-sm-3 ">Product Name</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <input type="text" name="ProductName" value="{{i.ProductName}}" class="form-control" placeholder="Product Name">
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Brand</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Brand" class="form-control" name="Brand">
+                                                                    <option disabled selected>Choose Brand...</option>
+                                                                    {% for j in dBrand %}
+                                                                    <option {% if i.Brand_id == j.id %} selected {% endif %} value="{{j.id}}">{{j.BrandName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Catagory</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Category" class="form-control" name="Category">
+                                                                    <option selected>Select Category...</option>
+                                                                    {% for j in dCat %}
+                                                                    <option {% if i.Category_id == j.id %} selected {% endif %} value="{{j.id}}">{{j.CategoryName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Size</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Size" class="form-control" name="Size">
+                                                                    <option selected>Select Size...</option>
+                                                                    {% for j in dSize %}
+                                                                    <option {% if i.Size_id == j.id %} selected {% endif %} value="{{j.id}}" >{{j.SizeName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                
+                                                </div>
+                                            </div>
+                
+                
+                
+                                        </div>
+                
+                                        <div class="col-md-6 ">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </li>
+                                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                
+                                             <!--         <form class="form-horizontal form-label-left">=================== -->
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Product Descriptions</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <textarea class="form-control" name="ProductDesc" rows="3" placeholder="Product Descriptions">{{i.productDesc}}</textarea>
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="col-9">
+                                                            <label for="ProductImages" class="form-label">Change Image</label>
+                                                            <img src="/media/{{i.Image}}" alt="" height="100px" width="100px">
+                                                            <!-- <input type="file" name="ProductImage" class=""> -->
+                                                            <input type="file" class="" id="ProductImages" value="{{i.Image}}" placeholder="" name="ProductImages" visibility: hidden>                
+                                                            <input type="text" class="" placeholder="" value="{{i.Image}}" name="ProductImagesText" visibility: hidden>                
+                                                        </div>
+                
+                                                        <div class="col-4">
+                                                            <!-- <label for="Productpic" class="form-label">Product Image</label> -->
+                                                        </div>                                          
+                
+                                                        <div class="ln_solid"></div>
+                                                        <div class="form-group">
+                                                            <div class="">
+                                                                <!-- <button type="button" class="btn btn-primary">Cancel</button>
+                                                                <button type="reset" class="btn btn-primary">Reset</button> -->
+                                                                <button type="submit" class="btn btn-success">Update</button>
+                                                            </div>
+                                                        </div>
+                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% endfor %}
+                                </div>
+                            <!-- </div> -->
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+</html>

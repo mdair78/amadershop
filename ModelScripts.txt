@@ -1,0 +1,429 @@
+from django.db import models
+# from django.contrib.auth.models import AbstractUser
+
+# Create your models here.
+
+# Parameter Table
+# 01. Brand
+# 02. Categroy
+# 03. Colors
+# 04. Size
+# 05. Supplier
+# 06. District
+# 07. Thana
+# 08. Area
+# 09. CustomerShippingAddress
+# 10. UserAdmin
+# 11. Products
+# 12. ProductDetail
+
+# Transaction Table
+# 01. ProductMultipleImage
+# 02. PurchaseMaster
+# 03. PurchaseDetail
+# 04. OrderMaster
+# 05. OrderDetail
+# 06. SaleMaster
+# 07. SaleHistory
+# 08. ReturnMaster
+# 09. WishList
+# 10. CustomerLoginHistory
+
+
+
+class Brand(models.Model):
+	BrandName		    = models.CharField(max_length=100)
+	class Meta:
+		verbose_name_plural = 'Brand'
+	def __str__(self) -> str:
+		return f"{self.id} {self.BrandName}"
+
+class Category(models.Model):
+	CategoryName		= models.CharField(max_length=100)
+	BrandId			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	class Meta:
+		verbose_name_plural = 'Category'		
+	def __str__(self) -> str:
+		return f"{self.BrandId} {self.id} {self.CategoryName}"
+
+class Color(models.Model):
+	ColorName	    	= models.CharField(max_length=50)
+	class Meta:
+		verbose_name_plural = 'Color'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ColorName}"		
+
+class Size(models.Model):
+	SizeName	    	= models.CharField(max_length=50, blank=True, null=True)
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE, blank=True, null=True)
+	Category		    = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True, null=True)
+	class Meta:
+		verbose_name_plural = 'Size'
+	def __str__(self) -> str:
+		return f"{self.id} {self.SizeName}"	
+	
+class Supplier(models.Model):
+	SupplierName		= models.CharField(max_length=100)
+	class Meta:
+		verbose_name_plural = 'Supplier'
+	def __str__(self) -> str:
+		return f"{self.id} {self.SupplierName}"	
+
+class Division(models.Model):
+	divisionCode		= models.IntegerField(blank=True, null=True)
+	divisionName		= models.CharField(max_length=100, blank=True, null=True)
+	class Meta:
+		verbose_name_plural = 'Division'
+	def __str__(self) -> str:
+		return f"{self.id} {self.divisionName}"	
+
+class District(models.Model):
+	DistrictCode		= models.IntegerField(blank=True, null=True)
+	DistrictName		= models.CharField(max_length=100, blank=True, null=True)
+	Division			= models.ForeignKey(Division,on_delete=models.CASCADE, blank=True, null=True)
+	DivisionName		= models.CharField(max_length=100, blank=True, null=True)
+	class Meta:
+		verbose_name_plural = 'District'
+	def __str__(self) -> str:
+		return f"{self.id} {self.DistrictName}"	
+
+class Thana(models.Model):
+	ThanaCode			= models.IntegerField(blank=True, null=True)
+	ThanaName	    	= models.CharField(max_length=200, blank=True, null=True)
+	District		    = models.ForeignKey(District,on_delete=models.CASCADE, blank=True, null=True)
+	DistrictName		= models.CharField(max_length=100, blank=True, null=True)
+	Division			= models.ForeignKey(Division,on_delete=models.CASCADE, blank=True, null=True)
+	DivisionName		= models.CharField(max_length=100, blank=True, null=True)
+	deviveryCharge		= models.IntegerField(blank=True, null=True)
+	class Meta:
+		verbose_name_plural = 'Thana'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ThanaName}"	
+
+class Area(models.Model):
+	AreaName    		= models.CharField(max_length=100, blank=True, null=True)
+	District	    	= models.ForeignKey(District,on_delete=models.CASCADE, blank=True, null=True)
+	Thana		    	= models.ForeignKey(Thana,on_delete=models.CASCADE, blank=True, null=True)
+	Division			= models.ForeignKey(Division,on_delete=models.CASCADE, blank=True, null=True)
+	# DivisionName		= models.CharField(max_length=100, blank=True, null=True)
+	deviveryCharge		= models.IntegerField(blank=True, null=True)
+
+	class Meta:
+		verbose_name_plural = 'Area'
+	def __str__(self) -> str:
+		return f"{self.id} {self.AreaName}"	
+
+class CustomerShippingAddress(models.Model):
+	Customername		= models.CharField(max_length=50, blank=True, null=True)
+	MobileNumber		= models.CharField(max_length=11, blank=True, null=True)
+	Email		    	= models.CharField(max_length=100, blank=True, null=True)
+	Address1	    	= models.CharField(max_length=200, blank=True, null=True)
+	Address2	    	= models.CharField(max_length=200, blank=True, null=True)
+	Division	    	= models.ForeignKey(Division,on_delete=models.CASCADE, blank=True, null=True)
+	DivisionName	    = models.CharField(max_length=100, blank=True, null=True)
+	District	    	= models.ForeignKey(District,on_delete=models.CASCADE, blank=True, null=True)
+	DistrictName	    = models.CharField(max_length=100, blank=True, null=True)
+	Thana		    	= models.ForeignKey(Thana,on_delete=models.CASCADE, blank=True, null=True)
+	ThanaName	   		= models.CharField(max_length=100, blank=True, null=True)
+	Area		    	= models.ForeignKey(Area,on_delete=models.CASCADE, blank=True, null=True)
+	AreaName	   		 = models.CharField(max_length=100, blank=True, null=True)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	u_dt		    	= models.DateTimeField(auto_now_add=True)
+	class Meta:
+		verbose_name_plural = 'CustomerShippingAddress'
+	def __str__(self) -> str:
+		return f"{self.id} {self.Customername}"	
+
+# class User(AbstractUser):
+#     user_type          = models.IntegerField(default=1)
+#     user_roll          = models.IntegerField(blank=True, null=True)
+#     login_time         = models.DateTimeField(auto_now=True)
+#     userImage          = models.ImageField(upload_to='userImage/', blank=True, null=True)
+
+# class UserCustom(AbstractUser): # In app_website I cannot create UserCustom. I setup permission though showing HINT: Add or change a related_name argument to the definition for 'app_website.UserCustom.user_permissions' or 'app_adminPanel.User.user_permissions'.
+# 	user_type	    	= models.IntegerField(default=1)
+# 	user_roll	    	= models.IntegerField(blank=True, null=True)
+# 	login_time	    	= models.IntegerField(blank=True, null=True)
+# 	userImage	    	= models.ImageField(upload_to='userImage/', blank=True, null=True)
+
+class Products(models.Model):
+	ProductCode	    	= models.CharField(max_length=8)
+	ProductName	    	= models.CharField(max_length=100) 
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	UnitPurchasePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitCurrSalePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitOldSalePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitStockInHand		= models.IntegerField(blank=True, null=True)	# Update When Purchase new products (Auto Calculate)
+	Image		    	= models.ImageField(upload_to='product_image/')
+	productDesc			= models.TextField()
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	u_dt		    	= models.DateTimeField(auto_now_add=True)
+	u_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'Products'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"
+
+class ProductDetail(models.Model):
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitPreviousStock	= models.IntegerField(blank=True, null=True)	# Update with UnitStockInHand column When Purchase new products
+	UnitPurchasePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitCurrSalePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitOldSalePrice	= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	UnitStockInHand		= models.IntegerField(blank=True, null=True)	# Update When Purchase new products
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	Image		    	= models.ImageField(upload_to='product_images/')
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	u_dt		    	= models.DateTimeField(auto_now_add=True)
+	u_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'ProductDetail'
+	# def __str__(self) -> str:
+	# 	return f"{self.id} {self.ProductName}"	
+
+class ProductMultipleImage(models.Model): 
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	Images	    		= models.ImageField(upload_to='product_multi_image/')
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	u_dt		    	= models.DateTimeField(auto_now_add=True)
+	u_usr		    	= models.CharField(max_length=150, blank=True, null=True)
+	class Meta:
+		verbose_name_plural = 'ProductMultipleImage'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class PurchaseMaster(models.Model):					# When Purchase update must be ProductDetail
+	PurchaseInvoiceNumber	= models.CharField(max_length=150)	# Incremental IntegerFieldField + yy + mm + dd
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	UnitPurchasePrice	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	UnitOldSalePrice	= models.IntegerField()
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Supplier	    	= models.ForeignKey(Supplier,on_delete=models.CASCADE)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'PurchaseMaster'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class PurchaseDetail(models.Model):
+	PurchaseInvoiceNumber	= models.ForeignKey(PurchaseMaster,on_delete=models.CASCADE)
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	UnitPurchasePrice	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	UnitOldSalePrice	= models.IntegerField()
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Image		    	= models.ImageField(upload_to='Product_Purchase_History/') # Require or not, confused
+	Supplier	    	= models.ForeignKey(Supplier,on_delete=models.CASCADE)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'PurchaseDetail'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+	
+
+class OrderMaster(models.Model):
+	OrderInvoiceNumber	= models.CharField(max_length=150)	# Incremental IntegerField + yy + mm + dd 
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	Qty		        	= models.IntegerField()
+	TotalPurchasePrice	= models.IntegerField()			# Qty * PurchasePrice
+	PurchasePrice		= models.IntegerField()
+	OldSalePrice		= models.IntegerField()
+	CurrSalePrice		= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()			# Qty * CurrSalePrice
+	SepcialDiscount		= models.IntegerField()
+	TotalPrice	    	= models.IntegerField()			# TotalSalePrice - SepcialDiscount
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customer    		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	ProductDeliveryStatus	= models.IntegerField(blank=True, null=True)	# Value - Full Deliverd, Partial Deliverd and Return
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'OrderMaster'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+	
+class OrderDetail(models.Model):
+	OrderInvoiceNumber	= models.ForeignKey(OrderMaster,on_delete=models.CASCADE)
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	UnitPurchasePrice	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	UnitOldSalePrice	= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()	# UnitQty * UnitCurrSalePrice
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customername		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'OrderDetail'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class SaleMaster(models.Model):
+	SaleInvoiceNumber	= models.CharField(max_length=150)	# Incremental IntegerField + yy + mm + dd 
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	Qty		        	= models.IntegerField()
+	TotalPurchasePrice	= models.IntegerField()			# Qty * PurchasePrice
+	PurchasePrice		= models.IntegerField()
+	OldSalePrice		= models.IntegerField()
+	CurrSalePrice		= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()			# Qty * CurrSalePrice
+	SepcialDiscount		= models.IntegerField()
+	TotalPrice	    	= models.IntegerField()			# TotalSalePrice - SepcialDiscount
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customer    		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	ProductDeliveryStatus	= models.IntegerField(blank=True, null=True)	# Value - Full Deliverd, Partial Deliverd and Return
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'SaleMaster'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class SaleHistory(models.Model):
+	SaleInvoiceNumber	= models.ForeignKey(SaleMaster,on_delete=models.CASCADE)
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	UnitPurchasePrice	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	UnitOldSalePrice	= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()	# UnitQty * UnitCurrSalePrice
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customername		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'SaleHistory'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class ReturnMaster(models.Model):
+	SaleInvoiceNumber	= models.ForeignKey(SaleMaster,on_delete=models.CASCADE)
+	Product	    		= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()			# Qty * CurrSalePrice
+	SepcialDiscount		= models.IntegerField()
+	TotalPrice	    	= models.IntegerField()			# TotalSalePrice - SepcialDiscount
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customer    		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	ProductDeliveryStatus	= models.IntegerField()			# Value - Full Return and Partial Return
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'ReturnMaster'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class ReturnDetail(models.Model):
+	SaleInvoiceNumber	= models.ForeignKey(SaleMaster,on_delete=models.CASCADE)
+	Product			    = models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	UnitPurchasePrice	= models.IntegerField()
+	UnitCurrSalePrice	= models.IntegerField()
+	UnitOldSalePrice	= models.IntegerField()
+	TotalSalePrice		= models.IntegerField()			# UnitQty * UnitCurrSalePrice
+	Brand			    = models.ForeignKey(Brand,on_delete=models.CASCADE)
+	BrandName	    	= models.CharField(max_length=100, blank=True, null=True) 
+	Category	    	= models.ForeignKey(Category,on_delete=models.CASCADE)
+	CategoryName	  	= models.CharField(max_length=100, blank=True, null=True) 
+	Color		    	= models.ForeignKey(Color,on_delete=models.CASCADE)
+	ColorName		 	= models.CharField(max_length=100, blank=True, null=True) 
+	Size		    	= models.ForeignKey(Size,on_delete=models.CASCADE)
+	SizeName	 	 	= models.CharField(max_length=100, blank=True, null=True) 
+	Customer    		= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'ReturnDetail'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class WishList(models.Model):
+	Product		    	= models.ForeignKey(ProductDetail,on_delete=models.CASCADE)
+	ProductCode	    	= models.ForeignKey(Products,on_delete=models.CASCADE)
+	UnitQty		    	= models.IntegerField() 
+	i_dt		    	= models.DateTimeField(auto_now=True)
+	i_usr		    	= models.CharField(max_length=150)
+	class Meta:
+		verbose_name_plural = 'WishList'
+	def __str__(self) -> str:
+		return f"{self.id} {self.ProductName}"	
+
+class CustomerLoginHistory(models.Model):
+	Customer	    	= models.ForeignKey(CustomerShippingAddress,on_delete=models.CASCADE)
+	Customername		= models.CharField(max_length=50, blank=True, null=True)
+	LogingTime	    	= models.DateTimeField(auto_now=True)
+	LogOutTime		    = models.DateTimeField(auto_now=True)
+	class Meta:
+		verbose_name_plural = 'CustomerLoginHistory'
+

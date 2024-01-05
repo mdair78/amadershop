@@ -1,0 +1,212 @@
+{% extends 'adminPanel/base.html' %}
+
+{% block cintent %}
+
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+
+                <div class="x_title">
+                    <h2>Products Purchase</h2>
+                    <ul class="nav navbar-right panel_toolbox"><a href=""></a>
+                        <!-- <li><a href="#"><i class=""><b>Show Products</b></i></a>
+                        </li> -->
+
+                        {% for b in dProductDtl %}
+                            <a class="btn btn-success" href="{% url 'showproddtl' b.id %}"><font color="white">Show Products Detail</font></a>
+                        {% endfor %}
+
+
+                        <!-- <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li> -->
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <div class="row">
+                        
+                        <div>
+                            {% for invoice in dinvoic %}
+                                <input type="text" name="purInvoiceNo" placeholder="Invoice Number">
+                            {% endfor %}
+                            <div>
+                                <input type="text" name="purInvoiceNo1" value="{{shared_purInvoiceNo}}" placeholder="Invoice Number____">
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12">
+                                    {% for i in dProductDtl %}
+                                    <form class="form-label-left input_mask" method="POST", action="{% url 'purchaseSave' i.id %}" >
+                                    {% csrf_token %}
+                
+                                    <div class="row">
+                                        <div class="col-md-6 ">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </li>
+                                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                
+                
+                                                        <div class="form-group row">
+                                                            <label for="ProductCode" class="col-form-label col-md-3 col-sm-3 ">Product Code</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <input type="text" name="ProductCode" value="{{i.ProductCode}}" class="form-control" placeholder="Product Code">
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label for="ProductName" class="col-form-label col-md-3 col-sm-3 ">Product Name</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <input type="text" name="ProductName" value="{{i.Product.ProductName}}" class="form-control" placeholder="Product Name">
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Brand</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Brand" class="form-control" name="Brand">
+                                                                    <option disabled selected>---Choose Brand---</option>
+                                                                    {% for j in dBrand %}
+                                                                    <option {% if i.Product.Brand_id == j.id %} selected {% endif %} value="{{j.id}}">{{j.BrandName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Catagory</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Category" class="form-control" name="Category">
+                                                                    <option selected>---Select Category---</option>
+                                                                    {% for j in dCat %}
+                                                                    <option {% if i.Product.Category_id == j.id %} selected {% endif %} value="{{j.id}}">{{j.CategoryName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Size</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Size" class="form-control" name="Size">
+                                                                    <option selected>Select Size...</option>
+                                                                    {% for j in dSize %}
+                                                                    <option {% if i.Size_id == j.id %} selected {% endif %} value="{{j.id}}" >{{j.SizeName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group row">
+                                                            <label class="control-label col-md-3 col-sm-3 ">Color</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="Size" class="form-control" name="Size">
+                                                                    <option selected>---Select Color---</option>
+                                                                    {% for j in dColor %}
+                                                                    <option {% if i.Size_id == j.id %} selected {% endif %} value="{{j.id}}" >{{j.ColorName}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>  
+                                                        
+                
+                                                        <div class="form-group row">
+                                                            <label for="stockinHand" class="col-form-label col-md-3 col-sm-3 ">Stock In Hand</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <input type="number" name="stockinHand" value = "{{i.StockInHand}}" class="form-control" placeholder="Stock In Hand">
+                                                            </div>
+                                                        </div>
+
+                                                </div>
+                                            </div>
+                                
+                                        </div>
+                
+                                        <div class="col-md-6 ">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <ul class="nav navbar-right panel_toolbox">
+                                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                        </li>
+                                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                
+                                             <!--         <form class="form-horizontal form-label-left">=================== -->
+                
+                                                <div class="form-group row">
+                                                    <label for="qty" class="col-form-label col-md-3 col-sm-3 ">Quentity</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="number" name="qty" value = 0 class="form-control" placeholder="Quentity">
+                                                    </div>
+                                                </div>
+                
+                                                <div class="form-group row">
+                                                    <label for="UnitPurchasePrice" class="col-form-label col-md-3 col-sm-3 ">Purchase Price</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="number" name="UnitPurchasePrice" value = 0 class="form-control" placeholder="Unit Purchase Price">
+                                                    </div>
+                                                </div>
+        
+                                                <div class="form-group row">
+                                                    <label for="UnitSalePrice" class="col-form-label col-md-3 col-sm-3 ">Sale Price</label>
+                                                    <div class="col-md-9 col-sm-9 ">
+                                                        <input type="number" name="UnitSalePrice" value = 0 class="form-control" placeholder="Unit Sale Price">
+                                                    </div>
+                                                </div>
+                
+                                                        <div class="col-9">
+                                                            <label for="" class="form-label">Product Image</label>
+                                                            <img src="/media/{{i.Image}}" alt="" height="100px" width="100px">
+                                                            <!-- <input type="file" name="ProductImage" class=""> -->
+                                                            <input type="file" class="" id="ProductImages" value="{{i.Image}}" placeholder="" name="ProductImages" visibility: hidden>
+                                                            <input type="text" class="" placeholder="" value="{{i.Image}}" name="ProductImagesText" visibility: hidden> 
+                                                        </div>
+                                                     
+                
+                                                        <div class="ln_solid"></div>
+                                                        <div class="form-group">
+                                                            <div class="">
+                                                                <!-- <button type="button" class="btn btn-primary">Cancel</button>
+                                                                <button type="reset" class="btn btn-primary">Reset</button> -->
+                                                                <button type="submit" class="btn btn-success">Update</button>
+                                                            </div>
+                                                        </div>
+                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                {% endfor %}
+                                </div>
+                            <!-- </div> -->
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+</html>
